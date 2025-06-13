@@ -63,7 +63,7 @@ struct ICM45686 : public ICM45Base {
 
 		struct RtcConfig {
 			static constexpr uint8_t reg = 0x26;
-			static constexpr uint8_t value = 0b00100011;  // enable RTC
+			static constexpr uint8_t value = 0b00000000;  // disable RTC
 		};
 	};
 
