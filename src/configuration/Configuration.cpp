@@ -234,6 +234,8 @@ void Configuration::loadSensors() {
 		m_Logger.debug("Found sensor toggle state at index %d", sensorId);
 
 		setSensorToggles(sensorId, sensorToggleState);
+
+		delay(1); // Ensure the file is closed before next iteration
 	});
 }
 
