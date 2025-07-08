@@ -55,6 +55,7 @@ unsigned long lastStatePrint = 0;
 bool secondImuActive = false;
 BatteryMonitor battery;
 TPSCounter tpsCounter;
+unsigned long lastTpsLogTime = 0; // 记录上次输出 TPS 的时间
 
 void setup() {
 	Serial.begin(serialBaudRate);
@@ -116,6 +117,7 @@ void setup() {
 
 	loopTime = micros();
 	tpsCounter.reset();
+	lastTpsLogTime = millis(); // 初始化上次输出 TPS 的时间
 }
 
 void loop() {
@@ -136,6 +138,7 @@ void loop() {
 	battery.Loop();
 	ledManager.update();
 	I2CSCAN::update();
+
 #ifdef TARGET_LOOPTIME_MICROS
 	long elapsed = (micros() - loopTime);
 	if (elapsed < TARGET_LOOPTIME_MICROS) {
@@ -152,6 +155,7 @@ void loop() {
 	}
 	loopTime = micros();
 #endif
+
 #if defined(PRINT_STATE_EVERY_MS) && PRINT_STATE_EVERY_MS > 0
 	unsigned long now = millis();
 	if (lastStatePrint + PRINT_STATE_EVERY_MS < now) {
@@ -159,4 +163,13 @@ void loop() {
 		SerialCommands::printState();
 	}
 #endif
+
+	// 每秒输出一次 TPS
+	unsigned long currentTime = millis();
+	if (currentTime - lastTpsLogTime >= 1000) {
+		int tps = tpsCounter.getTPS();
+		logger.info("Loop TPS: %d", tps);
+		tpsCounter.reset();
+		lastTpsLogTime = currentTime;
+	}
 }
