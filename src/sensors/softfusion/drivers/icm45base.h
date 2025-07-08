@@ -71,7 +71,7 @@ struct ICM45Base {
 		struct GyroConfig {
 			static constexpr uint8_t reg = 0x1c;
 			static constexpr uint8_t value
-				= (0b0000 << 4) | 0b0111;  // 4000dps, odr=409.6Hz
+				= (0b0000 << 4) | 0b1000;  // 200Hz (LP or LN mode) 
 		};
 
 		struct AccelConfig {
