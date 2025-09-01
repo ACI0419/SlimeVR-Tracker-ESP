@@ -71,6 +71,8 @@ void WiFiNetwork::setUp() {
 	wifiHandlerLogger.info("Setting up WiFi");
 	WiFi.persistent(true);
 	WiFi.mode(WIFI_STA);
+
+	WiFi.setTxPower(WIFI_POWER_11dBm);
 #if ESP8266
 #if USE_ATTENUATION
 	WiFi.setOutputPower(20.0 - ATTENUATION_N);
